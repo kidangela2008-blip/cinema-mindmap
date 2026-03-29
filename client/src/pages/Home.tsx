@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, ChevronRight, BookOpen, Zap, Heart, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -215,16 +215,13 @@ export default function Home() {
     setExpanded({});
   };
 
-  const characterStats = useMemo(() => {
-    if (!mindmapData) return [];
-    return mindmapData.mainBranches.map((char: any) => ({
-      name: char.name,
-      color: char.color,
-      psychology: char.psychology,
-      mainChoice: char.mainChoice,
-      subbranches: char.subbranches?.length || 0,
-    }));
-  }, [mindmapData]);
+  const characterStats = !mindmapData ? [] : mindmapData.mainBranches.map((char: any) => ({
+    name: char.name,
+    color: char.color,
+    psychology: char.psychology,
+    mainChoice: char.mainChoice,
+    subbranches: char.subbranches?.length || 0,
+  }));
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
