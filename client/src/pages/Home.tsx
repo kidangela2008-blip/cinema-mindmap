@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-interface TreeNode {
+interface MindmapNode {
   id: string;
   name: string;
   color?: string;
@@ -14,7 +14,7 @@ interface TreeNode {
   schoolOfAwareness?: string;
   events?: string[];
   functions?: string[];
-  subbranches?: TreeNode[];
+  subbranches?: MindmapNode[];
   choice?: string;
   consequence?: string;
   mainChoice?: string;
@@ -24,8 +24,8 @@ interface ExpandedState {
   [key: string]: boolean;
 }
 
-function TreeNode({ node, level = 0, expanded, onToggle }: {
-  node: TreeNode;
+function TreeNodeView({ node, level = 0, expanded, onToggle }: {
+  node: MindmapNode;
   level?: number;
   expanded: ExpandedState;
   onToggle: (id: string) => void;
@@ -148,8 +148,8 @@ function TreeNode({ node, level = 0, expanded, onToggle }: {
 
       {hasChildren && isExpanded && (
         <div>
-            {node.subbranches?.map((child: TreeNode) => (
-            <TreeNode
+            {node.subbranches?.map((child: MindmapNode) => (
+            <TreeNodeView
               key={child.id}
               node={child}
               level={level + 1}
@@ -201,8 +201,9 @@ export default function Home() {
   };
 
   const expandAll = () => {
+    if (!mindmapData) return;
     const allIds: ExpandedState = {};
-    const collectIds = (node: TreeNode) => {
+    const collectIds = (node: MindmapNode) => {
       allIds[`node-${node.id}`] = true;
       node.subbranches?.forEach(collectIds);
     };
@@ -263,7 +264,7 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
-                {characterStats.map((char: any, idx: number) => (
+              {characterStats.map((char: any, idx: number) => (
                 <Card key={idx} className="p-4">
                   <div className="flex items-start gap-3">
                     <div
@@ -285,7 +286,7 @@ export default function Home() {
             <div className="space-y-4">
               {mindmapData.mainBranches.map((branch: any) => (
                 <div key={branch.id} className="bg-white rounded-lg shadow-sm p-4">
-                  <TreeNode
+                  <TreeNodeView
                     node={branch}
                     level={0}
                     expanded={expanded}
