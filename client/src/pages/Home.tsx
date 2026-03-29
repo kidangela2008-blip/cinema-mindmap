@@ -215,6 +215,7 @@ export default function Home() {
   };
 
   const characterStats = useMemo(() => {
+    if (!mindmapData) return [];
     return mindmapData.mainBranches.map((char: any) => ({
       name: char.name,
       color: char.color,
@@ -222,7 +223,7 @@ export default function Home() {
       mainChoice: char.mainChoice,
       subbranches: char.subbranches?.length || 0,
     }));
-  }, []);
+  }, [mindmapData]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
